@@ -374,6 +374,7 @@ ul { padding: 0; list-style: none; }
 
 .service { padding-bottom: 130px; }
 .service h2 { margin-top: 20px; }
+.service .lead { margin-top: 22px; }
 
 .stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
 .stack li {
@@ -538,6 +539,17 @@ ul { padding: 0; list-style: none; }
   color: var(--text-70);
 }
 .spec-table dd strong { font-weight: 500; color: #fff; }
+
+.source-note {
+  margin-top: 22px;
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: var(--text-50);
+}
+.source-note a,
+.row-list a,
+.spec-table a { text-decoration: underline; text-underline-offset: 3px; }
+.row-list strong { font-weight: 500; color: #fff; }
 
 .feature {
   display: grid;
