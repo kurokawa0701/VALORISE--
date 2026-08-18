@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CONTACT｜VALORISE</title>
+<meta name="description" content="VALORISEへのお問い合わせ。カジュアル面談のお申し込み、案件のご相談、採用に関するご質問を受け付けています。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<header class="site-header">
+  <a class="logo" href="index.html">VALORISE</a>
+  <nav class="global-nav">
+    <a href="index.html">TOP</a>
+    <a href="company.html">COMPANY</a>
+    <a href="service.html">SERVICE</a>
+    <a href="recruit.html">RECRUIT</a>
+    <a href="qa.html">Q&amp;A</a>
+    <a href="contact.html" aria-current="page">CONTACT</a>
+  </nav>
+  <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="drawer">
+    <span></span><span></span>
+  </button>
+</header>
+
+<div class="drawer" id="drawer" hidden>
+  <nav>
+    <a href="index.html">TOP</a>
+    <a href="company.html">COMPANY</a>
+    <a href="service.html">SERVICE</a>
+    <a href="recruit.html">RECRUIT</a>
+    <a href="qa.html">Q&amp;A</a>
+    <a href="contact.html" aria-current="page">CONTACT</a>
+  </nav>
+</div>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="bg bg--head" data-fade></div>
+    <div class="bg bg--hero-lines"></div>
+    <div class="wrap page-head__body">
+      <nav class="breadcrumb" aria-label="現在の位置">
+        <a href="index.html">TOP</a><span aria-hidden="true">/</span><span>CONTACT</span>
+      </nav>
+      <span class="eyebrow" data-r>GET IN TOUCH</span>
+      <h1 class="display display--lg" data-r data-delay="120">CONTACT</h1>
+      <p class="page-head__lead" data-r data-delay="200">カジュアル面談、案件のご相談、採用に関するご質問。いずれもこのフォームから承ります。2営業日以内にご返信します。</p>
+    </div>
+  </section>
+
+  <section class="section section--lg wrap">
+    <div class="contact-grid">
+
+      <form id="contact-form" novalidate data-r>
+        <div class="field">
+          <label for="f-type">お問い合わせ種別<span class="req">REQUIRED</span></label>
+          <select id="f-type" name="type" required>
+            <option value="">選択してください</option>
+            <option value="casual">カジュアル面談を希望</option>
+            <option value="recruit">採用について質問したい</option>
+            <option value="project">案件について相談したい</option>
+            <option value="other">その他</option>
+          </select>
+          <span class="error" id="e-type" role="alert"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-name">お名前<span class="req">REQUIRED</span></label>
+          <input type="text" id="f-name" name="name" autocomplete="name" required>
+          <span class="error" id="e-name" role="alert"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-company">会社名・組織名</label>
+          <input type="text" id="f-company" name="company" autocomplete="organization">
+        </div>
+
+        <div class="field">
+          <label for="f-email">メールアドレス<span class="req">REQUIRED</span></label>
+          <input type="email" id="f-email" name="email" autocomplete="email" required>
+          <span class="error" id="e-email" role="alert"></span>
+        </div>
+
+        <div class="field">
+          <label for="f-tel">電話番号</label>
+          <input type="tel" id="f-tel" name="tel" autocomplete="tel">
+        </div>
+
+        <div class="field">
+          <label for="f-message">ご相談内容<span class="req">REQUIRED</span></label>
+          <textarea id="f-message" name="message" required></textarea>
+          <span class="error" id="e-message" role="alert"></span>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="f-consent" name="consent" required>
+          <span><a href="privacy.html">プライバシーポリシー</a>に同意のうえ送信します。</span>
+        </label>
+        <span class="error" id="e-consent" role="alert"></span>
+
+        <button class="btn-solid" type="submit">SEND</button>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+
+      <div data-r data-delay="120">
+        <div class="aside-block">
+          <span class="label">CASUAL INTERVIEW</span>
+          <p>選考ではありません。現在の単価・年収・案件の進め方を伺い、こちらの仕組みと照らし合わせて具体的な数字をお伝えします。現職を続けたままご相談いただけます。</p>
+        </div>
+        <div class="aside-block">
+          <span class="label">RESPONSE</span>
+          <p>2営業日以内にご返信します。届かない場合は迷惑メールフォルダをご確認のうえ、お手数ですが再度お送りください。</p>
+        </div>
+        <div class="aside-block">
+          <span class="label">BEFORE YOU ASK</span>
+          <p>報酬の仕組みや案件の選び方については、<a href="qa.html">Q&amp;A</a>にまとめています。募集条件は<a href="recruit.html">RECRUIT</a>をご確認ください。</p>
+        </div>
+        <div class="aside-block">
+          <span class="label">CHANNEL</span>
+          <p>働き方の実態は<a href="https://youtu.be/hJ2Kjz0I5BU" target="_blank" rel="noopener">YouTube公式チャンネル</a>でも公開しています。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <nav>
+    <a href="index.html">TOP</a>
+    <a href="company.html">COMPANY</a>
+    <a href="service.html">SERVICE</a>
+    <a href="recruit.html">RECRUIT</a>
+    <a href="qa.html">Q&amp;A</a>
+    <a href="contact.html">CONTACT</a>
+    <a href="privacy.html">PRIVACY</a>
+    <a href="https://neighborengineers.jp/" target="_blank" rel="noopener">OPERATING COMPANY</a>
+  </nav>
+  <div class="social">
+    <a href="https://youtu.be/hJ2Kjz0I5BU" target="_blank" rel="noopener">YOUTUBE</a>
+    <a href="https://zenn.dev/" target="_blank" rel="noopener">ZENN</a>
+    <a href="https://x.com/" target="_blank" rel="noopener">X</a>
+  </div>
+  <p class="copyright">© VALORISE 2026　ネイバーズ株式会社（東京支店）</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
