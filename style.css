@@ -34,6 +34,9 @@ body {
   font-family: var(--font-jp);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* 自動折り返しを文節単位にする。「宣伝文句にな／ります」のような
+     語の途中での改行を防ぐ。Chromium系で有効、他ブラウザは通常の折り返しにフォールバック */
+  word-break: auto-phrase;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -64,6 +67,9 @@ a:hover { color: #9aa0a6; }
 
 h1, h2, h3, p, ul { margin: 0; }
 ul { padding: 0; list-style: none; }
+
+/* 保険：個別指定を忘れても画像が親からはみ出さないようにする */
+img { max-width: 100%; }
 
 .wrap { padding-left: var(--pad-x); padding-right: var(--pad-x); }
 
@@ -119,11 +125,27 @@ ul { padding: 0; list-style: none; }
   transition: background-color .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
 }
 .btn-ghost:hover { background: #fff; color: #000; border-color: #fff; }
+/* 本文中に置く小さいボタン */
+.btn-ghost--sm {
+  margin-top: 22px;
+  padding: 11px 22px;
+  font-size: 11px;
+  letter-spacing: .18em;
+  border-color: rgba(255, 255, 255, .38);
+}
 
 /* --- decorative background layers ---------------------------------- */
 
 .bg { position: absolute; inset: 0; z-index: 0; }
 .scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+/* 写真は .bg--hero / .bg--about のグラデーションの上に重ねる。
+   読み込み前や読み込み失敗時はグラデーションがそのまま背景になる。 */
+.bg--photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .bg--hero {
   background:
@@ -136,8 +158,28 @@ ul { padding: 0; list-style: none; }
     repeating-linear-gradient(90deg, rgba(190, 215, 240, .05) 0 2px, rgba(0, 0, 0, 0) 2px 34px),
     repeating-linear-gradient(90deg, rgba(190, 215, 240, .03) 0 6px, rgba(0, 0, 0, 0) 6px 121px);
 }
+
+/* 写真の代わりに、右上に不均等な縦のバーを置いて厚みを出す。
+   マスクで左下（文字が載る側）には一切かからないようにしている。 */
+.bg--hero-bars {
+  opacity: .9;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(160, 198, 232, .13) 0 2px,
+      rgba(0, 0, 0, 0) 2px 27px,
+      rgba(160, 198, 232, .07) 27px 28px,
+      rgba(0, 0, 0, 0) 28px 74px,
+      rgba(160, 198, 232, .18) 74px 77px,
+      rgba(0, 0, 0, 0) 77px 131px,
+      rgba(160, 198, 232, .05) 131px 133px,
+      rgba(0, 0, 0, 0) 133px 196px);
+  -webkit-mask-image: radial-gradient(62% 92% at 76% 34%, #000 8%, rgba(0, 0, 0, 0) 68%);
+          mask-image: radial-gradient(62% 92% at 76% 34%, #000 8%, rgba(0, 0, 0, 0) 68%);
+}
+/* 写真自体が暗いため、スクリムは以前より弱めている。
+   これ以上強くすると被写体が潰れ、弱くすると文字のコントラストが落ちる。 */
 .scrim--bottom {
-  background: linear-gradient(180deg, rgba(0, 0, 0, .25) 0%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, .85) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, .22) 0%, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, .68) 100%);
 }
 
 .bg--model { background: radial-gradient(110% 75% at 50% 42%, #101c28 0%, #05070a 72%); }
@@ -155,12 +197,23 @@ ul { padding: 0; list-style: none; }
     radial-gradient(70% 90% at 82% 18%, rgba(200, 220, 240, .20) 0%, rgba(0, 0, 0, 0) 60%),
     linear-gradient(45deg, #080a0c 0%, #141a20 52%, #232c34 100%);
 }
+/* 斜めに差し込む光の帯。右半分だけに出して、本文が載る左側には掛けない */
+.bg--about-edge {
+  background: linear-gradient(118deg,
+    rgba(0, 0, 0, 0) 44%,
+    rgba(190, 214, 238, .04) 47%,
+    rgba(190, 214, 238, .13) 55%,
+    rgba(190, 214, 238, .04) 63%,
+    rgba(0, 0, 0, 0) 72%);
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 28%, #000 64%, #000 100%);
+          mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 28%, #000 64%, #000 100%);
+}
 .bg--about-lines {
   opacity: .4;
   background: repeating-linear-gradient(115deg, rgba(200, 220, 240, .05) 0 26px, rgba(0, 0, 0, 0) 26px 148px);
 }
 .scrim--left {
-  background: linear-gradient(90deg, rgba(0, 0, 0, .85) 0%, rgba(0, 0, 0, .5) 55%, rgba(0, 0, 0, .2) 100%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, .28) 55%, rgba(0, 0, 0, 0) 100%);
 }
 
 /* --- header --------------------------------------------------------- */
@@ -241,24 +294,38 @@ ul { padding: 0; list-style: none; }
   min-height: 620px;
   height: 92vh;
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   background: #111;
 }
-.hero__body { position: relative; z-index: 2; padding-bottom: 76px; }
+/* 見出しは左上、リードとボタンは左下。上下に離して画面の高さを使う */
+.hero__body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-top: 156px;   /* 固定ヘッダーを避ける */
+  padding-bottom: 76px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.hero__body > * { min-width: 0; }
+
 .hero__title {
   margin-top: 22px;
   font-family: var(--font-en);
-  font-size: 66px;
+  font-size: clamp(36px, 6.4vw, 124px);
   font-weight: 700;
   line-height: 1.02;
   letter-spacing: .01em;
 }
+.hero__aside {
+  align-self: end;
+  padding-bottom: 6px;
+}
+/* 1行で見せたいので max-width を外し、画面幅に連動させる */
 .hero__lead {
-  margin-top: 26px;
-  font-size: 16px;
-  line-height: 1.9;
+  font-size: clamp(16px, 1.6vw, 30px);
+  line-height: 1.8;
   font-weight: 500;
-  max-width: 24em;
 }
 .hero .btn-ghost { margin-top: 36px; }
 
@@ -284,7 +351,30 @@ ul { padding: 0; list-style: none; }
 }
 .model__body > * { min-width: 0; }
 .model .display { margin-top: 22px; }
-.model .lead { margin-top: 26px; }
+/* 文の切れ目で <br> を入れているため、32em では1文目が折り返してしまう */
+.model .lead { margin-top: 26px; max-width: 36em; }
+
+/* 何を100%とした割合なのかを、帯の直前で明示する */
+.split__head {
+  margin-bottom: 14px;
+  font-size: 13px;
+  letter-spacing: .06em;
+  color: var(--text-60);
+}
+.split__head strong {
+  font-weight: 500;
+  color: #fff;
+  font-family: var(--font-en);
+  font-size: 16px;
+  letter-spacing: .04em;
+  padding: 0 2px;
+}
+.split__caption {
+  margin-top: 16px;
+  font-size: 12.5px;
+  line-height: 1.95;
+  color: var(--text-50);
+}
 
 .split { display: flex; align-items: stretch; border: 1px solid var(--line); }
 .split__major { flex: 9; position: relative; padding: 30px 28px; }
@@ -309,7 +399,7 @@ ul { padding: 0; list-style: none; }
 }
 .facts > div { padding: 22px 24px; }
 .facts > div + div { border-left: 1px solid var(--line); }
-.facts p { margin-top: 8px; font-size: 14px; font-weight: 500; }
+.facts p { margin-top: 8px; font-size: 13.5px; line-height: 1.8; font-weight: 500; }
 
 /* --- statement ------------------------------------------------------ */
 
@@ -499,6 +589,8 @@ ul { padding: 0; list-style: none; }
   color: var(--text-70);
   text-wrap: pretty;
 }
+/* 文の切れ目で <br> を入れているページ用。基底より後ろに置かないと上書きされる */
+.page-head__lead--wide { max-width: 46em; }
 
 .breadcrumb {
   display: flex;
@@ -581,6 +673,31 @@ ul { padding: 0; list-style: none; }
   border: 1px solid var(--line);
   padding: 30px 28px;
 }
+/* 写真だけの枠。箇条書きは本文側に置いて左右の高さを揃える。
+   height: auto を書かないと HTML の height 属性が残り、aspect-ratio が無視される。 */
+.feature__media { border: 1px solid var(--line); }
+.feature__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.feature__field { margin-top: 44px; }
+.feature__field .label { display: block; margin-bottom: 14px; }
+.feature__field ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 44px;
+}
+.feature__field li {
+  padding: 13px 0;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--text-70);
+  border-top: 1px solid var(--line-soft);
+}
 .feature__aside .label { display: block; }
 .feature__aside ul { margin-top: 18px; }
 .feature__aside li {
@@ -592,19 +709,50 @@ ul { padding: 0; list-style: none; }
 }
 .feature__aside li:first-child { border-top: 0; padding-top: 0; }
 
-.minor-cols {
+/* 2件だけだと右側が空くため、見出しを左に置いて横幅を使い切る */
+.minor {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 44px;
+  grid-template-columns: 4fr 8fr;
+  gap: 68px;
+  align-items: start;
 }
-.minor-cols > * { min-width: 0; }
-.minor-cols h3 {
-  font-size: 16px;
+.minor > * { min-width: 0; }
+.minor .section-head { margin-bottom: 0; }
+
+/* 1件だけの紹介。罫線で囲って「単独で置かれている」ことを意図的に見せる。
+   背景の斜線は 115deg で、ABOUT セクションの .bg--about-lines と角度を揃えている。 */
+.new-service {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  padding: 34px 36px 38px;
+  background: var(--bg-panel);
+}
+.new-service::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(56% 130% at 88% 16%, rgba(122, 160, 200, .24) 0%, rgba(0, 0, 0, 0) 64%),
+    repeating-linear-gradient(115deg, rgba(200, 220, 240, .055) 0 22px, rgba(0, 0, 0, 0) 22px 128px);
+  /* 文章が載る左側には掛けない */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 22%, #000 76%);
+          mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 22%, #000 76%);
+}
+.new-service > * { position: relative; z-index: 1; }
+.new-service h3 {
+  font-size: 18px;
   font-weight: 700;
-  line-height: 1.7;
-  margin-bottom: 12px;
+  line-height: 1.6;
 }
-.minor-cols p { font-size: 13px; line-height: 2; color: var(--text-60); }
+.new-service p {
+  margin-top: 16px;
+  max-width: 44em;
+  font-size: 13.5px;
+  line-height: 2.05;
+  color: var(--text-70);
+}
 
 .row-list { border-top: 1px solid var(--line); }
 .row-list > li,
@@ -664,6 +812,211 @@ ul { padding: 0; list-style: none; }
   line-height: 1;
 }
 .big-stats p { margin-top: 14px; font-size: 13px; line-height: 1.95; color: var(--text-60); }
+
+/* --- member ----------------------------------------------------------- */
+
+.member-list { margin-top: 44px; border-top: 1px solid var(--line-soft); }
+
+.member {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  align-items: start;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.member > * { min-width: 0; }
+
+.member__photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--line);
+  background: var(--bg-panel);
+  overflow: hidden;
+}
+/* カラー表示。白黒に戻す場合は filter: grayscale(1) contrast(1.04); を足してください。 */
+.member__photo img {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.member__soon {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-en);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .24em;
+  color: var(--text-40);
+}
+
+.member__role {
+  display: block;
+  font-size: 12px;
+  letter-spacing: .08em;
+  color: var(--text-50);
+}
+.member h3 {
+  margin: 10px 0 16px;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+.member p { font-size: 13.5px; line-height: 2.1; color: var(--text-70); }
+
+/* --- topics（YouTube以外のお知らせ） ---------------------------------- */
+
+.topic-list { margin-top: 44px; border-top: 1px solid var(--line); }
+
+.topic {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: start;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+.topic > * { min-width: 0; }
+
+.topic__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding-top: 2px;
+}
+.topic__cat {
+  padding: 4px 11px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: var(--text-70);
+}
+.topic h3 {
+  font-size: 15.5px;
+  line-height: 1.8;
+  font-weight: 700;
+}
+/* リンクを持つお知らせだけ、見出しに下線を出して外部リンクだと分かるようにする */
+.topic h3 a {
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, .35);
+  text-underline-offset: 5px;
+  transition: text-decoration-color .3s var(--ease);
+}
+.topic h3 a:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+.topic p a { text-decoration: underline; text-underline-offset: 3px; }
+.topic p {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 2.05;
+  color: var(--text-70);
+}
+
+/* --- news ------------------------------------------------------------- */
+
+.news-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 40px;
+  margin-bottom: 52px;
+}
+.news-filter[hidden] { display: none; }
+.news-filter button {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-70);
+  font-family: var(--font-jp);
+  font-size: 12.5px;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: border-color .25s var(--ease), color .25s var(--ease), background-color .25s var(--ease);
+}
+.news-filter button:hover { border-color: rgba(255, 255, 255, .5); color: #fff; }
+.news-filter button[aria-pressed="true"] {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.news-list { border-top: 1px solid var(--line-soft); }
+
+.news-item {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 44px;
+  align-items: start;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.news-item > * { min-width: 0; }
+.news-item[hidden] { display: none; }
+
+.news-item__thumb {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  background: var(--bg-panel);
+  overflow: hidden;
+  transition: border-color .3s var(--ease);
+}
+.news-item__thumb:hover { border-color: rgba(255, 255, 255, .45); }
+.news-item__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.news-date {
+  font-family: var(--font-en);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  color: var(--text-50);
+}
+.news-cat {
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  color: var(--text-70);
+}
+.news-item h3 {
+  margin: 16px 0 14px;
+  font-size: 19px;
+  line-height: 1.75;
+  font-weight: 700;
+}
+.news-item p { font-size: 13.5px; line-height: 2.1; color: var(--text-70); }
+.news-link { margin-top: 16px; font-size: 12.5px; letter-spacing: .04em; }
+.news-link a { color: var(--text-50); text-decoration: underline; text-underline-offset: 3px; }
+.news-link a:hover { color: #fff; }
+
+.news-more { margin-top: 56px; text-align: center; }
+.news-more[hidden] { display: none; }
+
+button.btn-ghost {
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--font-en);
+}
 
 /* --- faq -------------------------------------------------------------- */
 
@@ -872,7 +1225,12 @@ ul { padding: 0; list-style: none; }
   .explore { grid-template-columns: 1fr 1fr; }
   .facts { grid-template-columns: 1fr; }
   .facts > div + div { border-left: 0; border-top: 1px solid var(--line); }
-  .hero__title { font-size: 44px; }
+  .hero__body {
+    grid-template-rows: auto auto;
+    row-gap: 40px;
+    padding-top: 132px;
+  }
+  .hero__aside { align-self: start; padding-bottom: 0; }
   .display--md { font-size: 40px; }
   .display--sm { font-size: 34px; }
   .statement p { font-size: 20px; }
@@ -883,18 +1241,39 @@ ul { padding: 0; list-style: none; }
   .drawer { display: none !important; }
 }
 
+/* ナビ項目が7つあるため、中間幅では字間と間隔を詰める */
+@media (min-width: 1001px) and (max-width: 1200px) {
+  .global-nav { gap: 20px; font-size: 12px; letter-spacing: .14em; }
+}
+
+/* .model が2カラムのままの中間幅では、facts の3分割が細くなりすぎる */
+@media (max-width: 1280px) {
+  .facts { grid-template-columns: 1fr; }
+  .facts > div { padding: 18px 24px; }
+  .facts > div + div { border-left: 0; border-top: 1px solid var(--line); }
+}
+
 @media (max-width: 1000px) {
   :root { --sec-lg: 96px; --sec-md: 80px; --sec-sm: 60px; }
   .display--lg { font-size: 42px; }
   .feature,
   .feature--rev { grid-template-columns: 1fr; gap: 36px; }
+  .feature--rev .feature__media { order: -1; }
+  .feature__field ul { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; gap: 52px; }
-  .minor-cols { grid-template-columns: 1fr; gap: 32px; }
+  .minor { grid-template-columns: 1fr; gap: 30px; }
+  .new-service { padding: 28px 24px 30px; }
   .page-head__body { padding-top: 148px; padding-bottom: 68px; }
+  .news-item { grid-template-columns: 1fr; gap: 24px; padding: 34px 0; }
+  .news-filter { margin-bottom: 44px; }
+  .member { grid-template-columns: 148px 1fr; gap: 26px; padding: 30px 0; }
+  .topic { grid-template-columns: 1fr; gap: 12px; padding: 22px 0; }
 }
 
 @media (max-width: 600px) {
-  .hero { height: auto; min-height: 0; padding-top: 180px; }
+  /* 上部の余白は .hero__body の padding-top が持つため、ここでは足さない */
+  .hero { height: auto; min-height: 0; }
+  .hero__body { padding-top: 124px; padding-bottom: 64px; }
   .display--lg { font-size: 34px; }
   .spec-table > div,
   .row-list > li,
@@ -903,7 +1282,8 @@ ul { padding: 0; list-style: none; }
   .big-stats > div + div { border-left: 0; border-top: 1px solid var(--line); }
   .big-stats .num { font-size: 44px; }
   .faq .answer { padding-right: 0; }
-  .hero__title { font-size: 36px; }
+  .member { grid-template-columns: 1fr; gap: 20px; }
+  .member__photo { max-width: 190px; }
   .reason-grid,
   .explore { grid-template-columns: 1fr; }
   .explore a { min-height: 0; padding: 40px 24px 32px; }

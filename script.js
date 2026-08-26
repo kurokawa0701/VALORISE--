@@ -81,6 +81,57 @@
     });
   }
 
+  /* --- news list: filter + load more -------------------------------- */
+  var newsList = document.getElementById('news-list');
+
+  if (newsList) {
+    var STEP = 5;
+    var items = Array.prototype.slice.call(newsList.querySelectorAll('.news-item'));
+    var filterBar = document.getElementById('news-filter');
+    var moreBox = document.getElementById('news-more');
+    var moreBtn = document.getElementById('news-more-btn');
+    var activeCat = 'all';
+    var shown = STEP;
+
+    function matches(el) {
+      return activeCat === 'all' || el.getAttribute('data-cat') === activeCat;
+    }
+
+    function render() {
+      var count = 0;
+      items.forEach(function (el) {
+        if (!matches(el)) { el.hidden = true; return; }
+        count += 1;
+        el.hidden = count > shown;
+      });
+      if (moreBox) moreBox.hidden = count <= shown;
+    }
+
+    // JS が動くときだけ絞り込みUIを出す。JS無効なら全件がそのまま並ぶ。
+    if (filterBar) {
+      filterBar.hidden = false;
+      filterBar.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-filter]');
+        if (!btn) return;
+        activeCat = btn.getAttribute('data-filter');
+        shown = STEP;
+        Array.prototype.forEach.call(filterBar.querySelectorAll('button'), function (b) {
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+        render();
+      });
+    }
+
+    if (moreBtn) {
+      moreBtn.addEventListener('click', function () {
+        shown += STEP;
+        render();
+      });
+    }
+
+    render();
+  }
+
   /* --- scroll reveal ------------------------------------------------ */
   var SELECTOR = '[data-r],[data-fade],[data-bar]';
 
