@@ -152,6 +152,18 @@ img { max-width: 100%; }
     radial-gradient(90% 70% at 68% 22%, rgba(122, 160, 200, .30) 0%, rgba(0, 0, 0, 0) 62%),
     linear-gradient(180deg, #1b2733 0%, #0d141b 55%, #05080b 100%);
 }
+/* エンブレムを中央に大きく敷き、文字の背後に回す。
+   金の彩度が強いため不透明度で抑える。上げすぎると見出しと競合する。 */
+.bg--mark {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(300px, 54vw, 820px);
+  height: auto;
+  opacity: .16;
+}
+
 .bg--hero-lines {
   opacity: .5;
   background:
@@ -159,23 +171,6 @@ img { max-width: 100%; }
     repeating-linear-gradient(90deg, rgba(190, 215, 240, .03) 0 6px, rgba(0, 0, 0, 0) 6px 121px);
 }
 
-/* 写真の代わりに、右上に不均等な縦のバーを置いて厚みを出す。
-   マスクで左下（文字が載る側）には一切かからないようにしている。 */
-.bg--hero-bars {
-  opacity: .9;
-  background:
-    repeating-linear-gradient(90deg,
-      rgba(160, 198, 232, .13) 0 2px,
-      rgba(0, 0, 0, 0) 2px 27px,
-      rgba(160, 198, 232, .07) 27px 28px,
-      rgba(0, 0, 0, 0) 28px 74px,
-      rgba(160, 198, 232, .18) 74px 77px,
-      rgba(0, 0, 0, 0) 77px 131px,
-      rgba(160, 198, 232, .05) 131px 133px,
-      rgba(0, 0, 0, 0) 133px 196px);
-  -webkit-mask-image: radial-gradient(62% 92% at 76% 34%, #000 8%, rgba(0, 0, 0, 0) 68%);
-          mask-image: radial-gradient(62% 92% at 76% 34%, #000 8%, rgba(0, 0, 0, 0) 68%);
-}
 /* 写真自体が暗いため、スクリムは以前より弱めている。
    これ以上強くすると被写体が潰れ、弱くすると文字のコントラストが落ちる。 */
 .scrim--bottom {
@@ -297,25 +292,39 @@ img { max-width: 100%; }
   align-items: stretch;
   background: #111;
 }
-/* 見出しは左上、リードとボタンは左下。上下に離して画面の高さを使う */
+/* 見出しは左上、エンブレムは右端までブリード、下辺は全幅の帯。
+   中央に空白の帯ができないよう、下の帯で左右をつないでいる。 */
 .hero__body {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding-top: 156px;   /* 固定ヘッダーを避ける */
-  padding-bottom: 76px;
+  padding-top: 150px;   /* 固定ヘッダーを避ける */
+  padding-bottom: 64px;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 .hero__body > * { min-width: 0; }
+.hero__body > :first-child { grid-column: 1; grid-row: 1; }
+
+.hero__aside {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
 
 .hero__title {
-  margin-top: 22px;
+  margin-top: 20px;
   font-family: var(--font-en);
-  font-size: clamp(36px, 6.4vw, 124px);
+  font-size: clamp(38px, 7.4vw, 152px);
   font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: .01em;
+  line-height: .96;
+  letter-spacing: -.005em;
 }
 .hero__aside {
   align-self: end;
@@ -663,16 +672,16 @@ img { max-width: 100%; }
   line-height: 1.65;
   font-weight: 700;
 }
+/* balance は各行の長さを均すので、最終行だけ極端に短くなるのを防げる。
+   段落が短い（数行）ときにだけ効く指定で、未対応ブラウザは通常の折り返しになる。 */
 .feature p {
   font-size: 14.5px;
   line-height: 2.2;
   color: var(--text-70);
+  max-width: 44em;
+  text-wrap: balance;
 }
 .feature p + p { margin-top: 20px; }
-.feature__aside {
-  border: 1px solid var(--line);
-  padding: 30px 28px;
-}
 /* 写真だけの枠。箇条書きは本文側に置いて左右の高さを揃える。
    height: auto を書かないと HTML の height 属性が残り、aspect-ratio が無視される。 */
 .feature__media { border: 1px solid var(--line); }
@@ -698,17 +707,6 @@ img { max-width: 100%; }
   color: var(--text-70);
   border-top: 1px solid var(--line-soft);
 }
-.feature__aside .label { display: block; }
-.feature__aside ul { margin-top: 18px; }
-.feature__aside li {
-  padding: 12px 0;
-  font-size: 13.5px;
-  line-height: 1.8;
-  color: var(--text-70);
-  border-top: 1px solid var(--line-soft);
-}
-.feature__aside li:first-child { border-top: 0; padding-top: 0; }
-
 /* 2件だけだと右側が空くため、見出しを左に置いて横幅を使い切る */
 .minor {
   display: grid;
@@ -1226,11 +1224,18 @@ button.btn-ghost {
   .facts { grid-template-columns: 1fr; }
   .facts > div + div { border-left: 0; border-top: 1px solid var(--line); }
   .hero__body {
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
     row-gap: 40px;
     padding-top: 132px;
   }
-  .hero__aside { align-self: start; padding-bottom: 0; }
+  .hero__aside {
+    grid-column: 1;
+    grid-row: 3;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+  }
   .display--md { font-size: 40px; }
   .display--sm { font-size: 34px; }
   .statement p { font-size: 20px; }

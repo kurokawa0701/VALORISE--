@@ -6,9 +6,9 @@ HTML/CSS/JavaScript のみ。ビルドツール・フレームワーク不使用
 
 ```
 index.html      HOME（ヒーロー／90%モデル／ABOUT／FOUR REASONS／SERVICE／回遊カード／CTA）
-company.html    COMPANY（会社概要／運営会社／アクセス）
-service.html    SERVICE（主軸2事業／補足3事業／技術領域／依頼の流れ）
-recruit.html    RECRUIT（3つの数字／FOUR REASONS／MEMBER／募集要項／選考フロー）
+company.html    COMPANY（会社概要／運営会社／MEMBER／アクセス）
+service.html    SERVICE（3事業／新サービス／技術領域／依頼の流れ）
+recruit.html    RECRUIT（3つの数字／FOUR REASONS／募集要項／選考フロー）
 news.html       NEWS（カテゴリ絞り込み／記事一覧／LOAD MORE）
 qa.html         Q&A（3カテゴリのアコーディオン）
 contact.html    CONTACT（お問い合わせフォーム）
@@ -32,9 +32,11 @@ script.js       モバイルドロワー／フォーム検証／スクロール�
 - **Q&A は `<details>` / `<summary>`** で実装。JS なしで開閉します。
 - **日本語の改行**：`body` に `word-break: auto-phrase` を指定し、自動折り返しが文節単位で起きるようにしています（「宣伝文句にな／ります」のような語中改行を防ぐ）。Chromium系のみ有効で、Safari・Firefox では通常の折り返しにフォールバックします。そのうえで、各ページのリード文（`.page-head__lead`）と `.statement` には**文の切れ目に手動で `<br>`** を入れています。`<br>` を入れたリードには `.page-head__lead--wide`（max-width 46em）を併用しないと、34em で先に折り返してしまうので注意してください。
 
-## RECRUIT の MEMBER セクションについて
+## COMPANY の MEMBER セクションについて
 
-FOUR REASONS のあと、休憩セクションを挟んで募集要項の前に置いています。カードグリッドは1ページ1回までという制約があり、FOUR REASONS で使い切っているため、**縦写真＋横テキストの行リスト**で組んでいます。
+「数字を出せない会社は、数字で語らない。」の休憩セクションの直後、ACCESS の前に置いています（`#member`）。**縦写真＋横テキストの行リスト**で組んでいます。
+
+当初は RECRUIT に置いていましたが、COMPANY へ移しました。「会社概要 → 運営会社の考え方 → 単価開示の宣言 → **その判断をしている人たち** → 所在地」という流れになり、宣言のすぐ後に責任者の顔が来ます。NEWS の人事お知らせからも `company.html#member` へリンクしています。
 
 - **写真**：現在は枠と斜線テクスチャだけです。`.member__photo` 内の `<span class="bg bg--hero-lines"></span>` を削除し、`<img src="assets/member-01.jpg" alt="…" width="600" height="800" decoding="async" loading="lazy">` に置き換えてください。**3:4（縦長）でトリミングされます。**
 - **白黒／カラーの切り替え**：`style.css` の `.member__photo img` に `filter: grayscale(1) contrast(1.04)` を指定しています。**カラー写真をそのまま入れても白黒で表示される**ので、まず全員分を入れてから、この1行を消してカラーでも配色が成立するか確認してください。一部だけカラーにするのは避けてください（列が不揃いに見えます）。
@@ -84,6 +86,7 @@ YouTube以外の発表を置く場所です。プレスリリース、採用情�
    - **privacy.html：個人情報保護管理者の記載がありません。** 開示請求の窓口は住所・電話まで入っていますが、管理者の部署名・氏名は未記載です。
    - **privacy.html：Cookieの説明が一般論のみ**です。Google Analytics 等を導入する場合はツール名とオプトアウト方法を明記してください。
    - **service.html / index.html：技術スタックは想定ベース**です。実案件で使用している技術に精査してください。
+   - **service.html「02 コンサルティング事業」の本文は私が書いたドラフト**です。堀江誠二さんの経歴（IT/OTコンサル11年、製造・物流領域のDX、構想から事業化まで）を根拠に組み立てていますが、実際のサービス内容と食い違っていないか確認してください。
    - **社員数は「2025年7月現在」の数値**です（company.html）。最新の数字に更新してください。
    - **recruit.html の MEMBER 紹介文5件は、役割から推定して書いたドラフトです。** 前職・実績・具体的な数字は一切使っていませんが、実在の方についての記述なので、**公開前に必ずご本人の確認を取ってください。**
    - **`assets/member-enoya-hold.jpg` が宙に浮いています。** 榎屋さんの写真を600×800に切り出したものですが、掲載枠が未定のため HTML には入れていません。掲載する場合は誰と入れ替えるか、役職は何かを決めてください。掲載しない場合はこのファイルを削除してください（未使用のまま公開されます）。
@@ -162,29 +165,36 @@ python tools/optimize_photo.py 撮影/office.jpg --preset wide --out access.jpg
 
 | ファイル | 使用箇所 | 寸法 | 容量 |
 |---|---|---|---|
-| `assets/service-infra.jpg` | service 01 インフラ構築 | 1200×800 | 119KB |
-| `assets/service-dev.jpg` | service 02 システム開発 | 1200×800 | 63KB |
+| `assets/logo-mark.png` | index ヒーローのエンブレム | 840×840 | 145KB |
+| `assets/service-dev.jpg` | service 01 システム開発 | 1200×800 | 63KB |
+| `assets/service-consulting.jpg` | service 02 コンサルティング事業 | 1200×800 | 96KB |
+| `assets/service-infra.jpg` | service 03 インフラ事業 | 1200×800 | 119KB |
 | `assets/member-01/02/04/05.jpg` | recruit MEMBER 4名 | 600×800 | 各70〜93KB |
 | `assets/ogp.jpg` | 全ページ OGP | 1200×630 | 67KB |
 
-**TOPページは写真を使っていません。背景はすべてCSSです。**
-
-一度AI生成の写真（夜のビル、コンクリートの壁）を入れましたが、**構造が破綻していて「変」に見えたため撤去**しました。AIは建物のような構造物を正しく描けません。現在は次の構成です。
+**TOPページの背景はすべてCSSです。写真は使っていません。** ヒーローの視覚的な主役はブランドエンブレム（`assets/logo-mark.png`）で、右側に大きく配置しています。
 
 | クラス | 役割 |
 |---|---|
 | `.bg--hero` | 右上からの冷たいグロー＋上下のグラデーション |
-| `.bg--hero-bars` | 不均等な幅の縦バー。右上だけに出し、文字が載る左下には放射マスクで掛からないようにしている |
 | `.bg--hero-lines` | 細い縦線 |
+| `.scrim--bottom` | 下方向を暗く落とす |
+| `.hero__mark` | エンブレム。`clamp(180px, 24vw, 420px)`。1000px以下では見出しの下へ移動 |
 | `.bg--about` | 45度のグラデーション＋右上の淡いグロー |
-| `.bg--about-edge` | 斜めに差し込む光の帯。右半分だけに出す（元の写真の構図を再現したもの） |
+| `.bg--about-edge` | 斜めに差し込む光の帯。右半分だけに出す |
 | `.bg--about-lines` | 115度の斜線 |
+
+一度AI生成の写真（夜のビル、コンクリート、オフィスで議論する3人）を試しましたが、いずれも撤去しました。建築物は構造が破綻し、人物写真（`community.jpg`）は**生成AIで作られた実在しない3人**だったためです。TOPに写真を入れ直す場合は実写を推奨します。
 
 **バーや光の帯は等間隔にしていません。**均等に並べると「よくあるテック背景」に見えるため、間隔と濃度を意図的にばらつかせています。数値を触る場合もこの点は保ってください。
 
 白文字とのコントラストは、文字が載る領域を計算して **ヒーロー左下 17.8:1 / ABOUT 左半分 16.8:1** を確認済みです（基準は本文4.5:1）。グラデーションの数値を変えたら再計測してください。
 
-**未使用ファイル**：`assets/hero.jpg` と `assets/about.jpg` はどこからも参照されていません。削除して構いません。
+**ロゴについて**：`assets/logo-icon.png`（1080×1080）は背景が黒で塗りつぶされた画像で、透過されていません。写真の上に置くと黒い四角が見えるため、黒を抜いて透過PNG化し、176pxに縮小した `assets/logo-mark.png`（10KB）を作ってヒーローで使っています。作り直す場合は `logo-icon.png` が元データです。`logo-lockup-web.png` は白背景なので、この黒基調のサイトではそのまま使えません。
+
+**ヘッダーのロゴは今も文字**（Barlow Condensed の「VALORISE」）です。エンブレム画像に差し替えることもできますが、ヘッダーは全ページに出るので、切り替えると印象がかなり変わります。
+
+**未使用ファイル**：`assets/hero.jpg`、`assets/about.jpg`、`assets/community.jpg`、`assets/member-enoya-hold.jpg`、`assets/logo-lockup-web.png` はどこからも参照されていません。`logo-icon.png`（エンブレムの元データ）は残してください。
 
 SERVICE の2枚は `.feature__aside` の上部にパネルの罫線まで見開きで配置しています（`.feature__photo`）。`height: auto` を必ず併記してください。書かないとHTMLの `height` 属性が残り、`aspect-ratio` が無視されます。
 
