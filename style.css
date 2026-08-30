@@ -152,18 +152,6 @@ img { max-width: 100%; }
     radial-gradient(90% 70% at 68% 22%, rgba(122, 160, 200, .30) 0%, rgba(0, 0, 0, 0) 62%),
     linear-gradient(180deg, #1b2733 0%, #0d141b 55%, #05080b 100%);
 }
-/* エンブレムを中央に大きく敷き、文字の背後に回す。
-   金の彩度が強いため不透明度で抑える。上げすぎると見出しと競合する。 */
-.bg--mark {
-  inset: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(300px, 54vw, 820px);
-  height: auto;
-  opacity: .16;
-}
-
 .bg--hero-lines {
   opacity: .5;
   background:
@@ -174,7 +162,19 @@ img { max-width: 100%; }
 /* 写真自体が暗いため、スクリムは以前より弱めている。
    これ以上強くすると被写体が潰れ、弱くすると文字のコントラストが落ちる。 */
 .scrim--bottom {
-  background: linear-gradient(180deg, rgba(0, 0, 0, .22) 0%, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, .68) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, .62) 100%);
+}
+
+/* 見出しは左側に置くため、写真の左だけを沈める。
+   42% までは .86 で一定に保ち、そこから 68% でゼロに戻す。
+   単純な 0%→68% のグラデーションでは駄目。写真の 34〜38% の位置に
+   窓枠の隙間から街の明かりが差す細い帯があり、そこが「ENGINEERS」の
+   行末と重なって 3.3:1 まで落ちる（実測値）。平坦部で潰している。 */
+.scrim--hero-left {
+  background: linear-gradient(90deg,
+    rgba(0, 0, 0, .86) 0%,
+    rgba(0, 0, 0, .86) 42%,
+    rgba(0, 0, 0, 0) 68%);
 }
 
 .bg--model { background: radial-gradient(110% 75% at 50% 42%, #101c28 0%, #05070a 72%); }
