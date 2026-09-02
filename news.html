@@ -138,210 +138,73 @@
   </section>
 
   <section class="section section--panel wrap" id="movie">
-    <div class="section-head" data-r>
-      <span class="eyebrow">OFFICIAL CHANNEL</span>
-      <h2 class="display display--sm">VIDEO</h2>
-    </div>
-    <p class="lead" data-r data-delay="60">公式チャンネル「SESは還元率で決まる【VALORISE】」で公開した動画です。毎週金曜19時に更新しています。</p>
-
-    <!-- 申し送り：カテゴリ絞り込みは script.js が有効化します。JS無効時はこのブロックごと非表示のまま、記事は全件表示されます。 -->
-    <div class="news-filter" id="news-filter" hidden>
-      <button type="button" data-filter="all" aria-pressed="true">すべて</button>
-      <button type="button" data-filter="ai" aria-pressed="false">AI・技術</button>
-      <button type="button" data-filter="pay" aria-pressed="false">報酬・単価</button>
-      <button type="button" data-filter="career" aria-pressed="false">キャリア</button>
-      <button type="button" data-filter="work" aria-pressed="false">案件・働き方</button>
+    <div class="video-head" data-r>
+      <div>
+        <span class="eyebrow">OFFICIAL CHANNEL</span>
+        <h2 class="display display--sm">VIDEO</h2>
+      </div>
+      <p class="video-head__note">SESは還元率で決まる【VALORISE】<br><span>毎週金曜 19:00 更新</span></p>
     </div>
 
-    <!-- 申し送り：サムネイルは YouTube のホットリンク（i.ytimg.com）です。
-         自社サーバーに持ちたい場合は画像を assets/ に保存し、src を差し替えてください。 -->
-    <div class="news-list" id="news-list">
+    <!-- 申し送り：最新3件だけを手で並べています。新しい動画を足すときは
+         先頭に <li class="video"> をコピーし、いちばん下の1件を削ってください。
+         サムネイル画像は意図的に使っていません（YouTubeの派手なサムネがこの
+         サイトの配色と衝突するため）。番号・再生マークはすべてCSSで描いています。 -->
+    <ol class="video-list" data-r data-delay="100">
 
-      <article class="news-item" data-cat="ai" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/TefceeWxPlE" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/TefceeWxPlE/hqdefault.jpg" alt="動画サムネイル：【AI実演】現役CTOが要件定義から実装まで作ります。AI開発の全工程を公開" width="480" height="360" decoding="async" loading="lazy">
+      <li class="video">
+        <a class="video__link" href="https://youtu.be/TefceeWxPlE" target="_blank" rel="noopener">
+          <span class="video__no" aria-hidden="true">01</span>
+          <span class="video__main">
+            <span class="video__meta">
+              <time datetime="2026-08-07">2026.08.07</time>
+              <span class="video__cat">AI・技術</span>
+              <span class="video__dur">13:29</span>
+            </span>
+            <span class="video__title">【AI実演】現役CTOが要件定義から実装まで作ります。AI開発の全工程を公開</span>
+            <span class="video__desc">ヒアリングと要件定義から、生成AIを使ったアプリ作成、動作確認、納品までを一本で通して実演しています。AIで何が速くなり、どこに人の判断が残るのかが分かる構成です。</span>
+          </span>
+          <span class="video__play" aria-hidden="true"></span>
         </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-08-07">2026.08.07</time></span>
-            <span class="news-cat">AI・技術</span>
-          </div>
-          <h3>【AI実演】現役CTOが要件定義から実装まで作ります。AI開発の全工程を公開</h3>
-          <p>ヒアリングと要件定義から、生成AIを使ったアプリ作成、動作確認、クライアントへの納品までを一本で通して実演しています。AIで何が速くなり、どこに人の判断が残るのかが分かる構成です。</p>
-          <p class="news-link"><a href="https://youtu.be/TefceeWxPlE" target="_blank" rel="noopener">YouTubeで見る（13:29）</a></p>
-        </div>
-      </article>
+      </li>
 
-      <article class="news-item" data-cat="ai" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/_IVi0LaM5s8" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/_IVi0LaM5s8/hqdefault.jpg" alt="動画サムネイル：【業界崩壊】&quot;SESは終わる&quot;は本当か？現役事業部長がAI時代のSESの未来を解説" width="480" height="360" decoding="async" loading="lazy">
+      <li class="video">
+        <a class="video__link" href="https://youtu.be/_IVi0LaM5s8" target="_blank" rel="noopener">
+          <span class="video__no" aria-hidden="true">02</span>
+          <span class="video__main">
+            <span class="video__meta">
+              <time datetime="2026-07-31">2026.07.31</time>
+              <span class="video__cat">AI・技術</span>
+              <span class="video__dur">17:43</span>
+            </span>
+            <span class="video__title">【業界崩壊】&quot;SESは終わる&quot;は本当か？AI時代のSESの未来を解説</span>
+            <span class="video__desc">AIの普及でSESという業態は消えるのか、という問いにVALORISE事業責任者の灰田が答えています。SESの将来性を正面から扱った回です。</span>
+          </span>
+          <span class="video__play" aria-hidden="true"></span>
         </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-07-31">2026.07.31</time></span>
-            <span class="news-cat">AI・技術</span>
-          </div>
-          <h3>【業界崩壊】&quot;SESは終わる&quot;は本当か？現役事業部長がAI時代のSESの未来を解説</h3>
-          <p>AIの普及でSESという業態は消えるのか、という問いに事業部長の灰田が答えています。SESの将来性を正面から扱った回です。</p>
-          <p class="news-link"><a href="https://youtu.be/_IVi0LaM5s8" target="_blank" rel="noopener">YouTubeで見る（17:43）</a></p>
-        </div>
-      </article>
+      </li>
 
-      <article class="news-item" data-cat="pay" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/bFQ6K-TN6vM" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/bFQ6K-TN6vM/hqdefault.jpg" alt="動画サムネイル：【衝撃】フリーランスエンジニアの現実｜高単価の罠" width="480" height="360" decoding="async" loading="lazy">
+      <li class="video">
+        <a class="video__link" href="https://youtu.be/bFQ6K-TN6vM" target="_blank" rel="noopener">
+          <span class="video__no" aria-hidden="true">03</span>
+          <span class="video__main">
+            <span class="video__meta">
+              <time datetime="2026-07-24">2026.07.24</time>
+              <span class="video__cat">報酬・単価</span>
+              <span class="video__dur">12:30</span>
+            </span>
+            <span class="video__title">【衝撃】フリーランスエンジニアの現実｜高単価の罠</span>
+            <span class="video__desc">フリーランスは本当に稼げるのか、理想と現実の差から入り、成功する人と失敗する人の分かれ道を整理しています。独立を検討している方向けの内容です。</span>
+          </span>
+          <span class="video__play" aria-hidden="true"></span>
         </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-07-24">2026.07.24</time></span>
-            <span class="news-cat">報酬・単価</span>
-          </div>
-          <h3>【衝撃】フリーランスエンジニアの現実｜高単価の罠</h3>
-          <p>フリーランスは本当に稼げるのか、理想と現実の差から入り、成功する人と失敗する人の分かれ道を整理しています。独立を検討している方向けの内容です。</p>
-          <p class="news-link"><a href="https://youtu.be/bFQ6K-TN6vM" target="_blank" rel="noopener">YouTubeで見る（12:30）</a></p>
-        </div>
-      </article>
+      </li>
 
-      <article class="news-item" data-cat="career" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/K_5Gt1JHabo" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/K_5Gt1JHabo/hqdefault.jpg" alt="動画サムネイル：【2026年最新】SESで年収を上げるキャリアパスを全部話します！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-07-17">2026.07.17</time></span>
-            <span class="news-cat">キャリア</span>
-          </div>
-          <h3>【2026年最新】SESで年収を上げるキャリアパスを全部話します！</h3>
-          <p>スキル投資・案件選定・単価交渉・案件継続・キャリア分岐の5つに分けて、年収を上げる道筋を解説しています。</p>
-          <p class="news-link"><a href="https://youtu.be/K_5Gt1JHabo" target="_blank" rel="noopener">YouTubeで見る（19:19）</a></p>
-        </div>
-      </article>
+    </ol>
 
-      <article class="news-item" data-cat="work" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/B0NWPkORreE" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/B0NWPkORreE/hqdefault.jpg" alt="動画サムネイル：高還元SESのよくある質問について回答します！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-07-10">2026.07.10</time></span>
-            <span class="news-cat">案件・働き方</span>
-          </div>
-          <h3>高還元SESのよくある質問について回答します！</h3>
-          <p>年収はどのくらい変わるのか、未経験でも応募できるのか、なぜ還元率90%が可能なのか。面談でよく聞かれる6つの質問に順番に答えています。</p>
-          <p class="news-link"><a href="https://youtu.be/B0NWPkORreE" target="_blank" rel="noopener">YouTubeで見る（18:05）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="pay" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/N2zjGtOX61o" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/N2zjGtOX61o/hqdefault.jpg" alt="動画サムネイル：高還元SESで働くエンジニアの給料明細を公開！？年収1,000万円超えは簡単" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-07-03">2026.07.03</time></span>
-            <span class="news-cat">報酬・単価</span>
-          </div>
-          <h3>高還元SESで働くエンジニアの給料明細を公開！？年収1,000万円超えは簡単</h3>
-          <p>自分の単価を知らないまま働いているエンジニアが多いという話から始まり、還元率90%の内訳と、転職して年収が上がった実例を扱っています。</p>
-          <p class="news-link"><a href="https://youtu.be/N2zjGtOX61o" target="_blank" rel="noopener">YouTubeで見る（19:53）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="career" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/gUfJ1rpkPTE" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/gUfJ1rpkPTE/hqdefault.jpg" alt="動画サムネイル：高還元SESで歩めるキャリアを全公開します！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-06-26">2026.06.26</time></span>
-            <span class="news-cat">キャリア</span>
-          </div>
-          <h3>高還元SESで歩めるキャリアを全公開します！</h3>
-          <p>「35歳で詰む」という通説の正体から入り、キャリアが上がる人と上がらない人の差、案件マッチングの仕組み、実際のキャリア事例までを紹介しています。</p>
-          <p class="news-link"><a href="https://youtu.be/gUfJ1rpkPTE" target="_blank" rel="noopener">YouTubeで見る（13:35）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="work" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/2CMrfLgV2D8" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/2CMrfLgV2D8/hqdefault.jpg" alt="動画サムネイル：高還元SESの案件について全て公開します！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-06-19">2026.06.19</time></span>
-            <span class="news-cat">案件・働き方</span>
-          </div>
-          <h3>高還元SESの案件について全て公開します！</h3>
-          <p>SESに付きまとうイメージと、実際の案件の質・選択肢の広さについて話しています。どんな案件に入れるのかを知りたい方向けです。</p>
-          <p class="news-link"><a href="https://youtu.be/2CMrfLgV2D8" target="_blank" rel="noopener">YouTubeで見る（13:49）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="career" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/M7k_UpDI1tM" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/M7k_UpDI1tM/hqdefault.jpg" alt="動画サムネイル：高還元SESで稼げる人を徹底解説します！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-06-12">2026.06.12</time></span>
-            <span class="news-cat">キャリア</span>
-          </div>
-          <h3>高還元SESで稼げる人を徹底解説します！</h3>
-          <p>フリーランスの方、大手にお勤めの方、他のSES企業にお勤めの方それぞれについて、向いている場合と向いていない場合を分けて話しています。SES企業を選ぶときの着眼点にも触れています。</p>
-          <p class="news-link"><a href="https://youtu.be/M7k_UpDI1tM" target="_blank" rel="noopener">YouTubeで見る（17:29）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="work" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/9jYE0jv3JIc" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/9jYE0jv3JIc/hqdefault.jpg" alt="動画サムネイル：高還元SESでエンジニアが働くメリットを解説します！！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-06-05">2026.06.05</time></span>
-            <span class="news-cat">案件・働き方</span>
-          </div>
-          <h3>高還元SESでエンジニアが働くメリットを解説します！！</h3>
-          <p>業務内容・働く環境と仲間・高還元の3点をメリットとして挙げたうえで、デメリットにもそのまま触れています。</p>
-          <p class="news-link"><a href="https://youtu.be/9jYE0jv3JIc" target="_blank" rel="noopener">YouTubeで見る（15:58）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="work" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/4ie53t-rhOU" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/4ie53t-rhOU/hqdefault.jpg" alt="動画サムネイル：SES会社なのに社内SE！？26歳エンジニアの1日に密着" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-05-29">2026.05.29</time></span>
-            <span class="news-cat">案件・働き方</span>
-          </div>
-          <h3>SES会社なのに社内SE！？26歳エンジニアの1日に密着</h3>
-          <p>出社から退社まで、実際の1日を追った密着回です。アプリ開発、営業担当との会議、研修生の発表会まで含まれています。チャンネル内で最も視聴されている動画です。</p>
-          <p class="news-link"><a href="https://youtu.be/4ie53t-rhOU" target="_blank" rel="noopener">YouTubeで見る（14:44）</a></p>
-        </div>
-      </article>
-
-      <article class="news-item" data-cat="pay" data-r>
-        <a class="news-item__thumb" href="https://youtu.be/hJ2Kjz0I5BU" target="_blank" rel="noopener">
-          <img src="https://i.ytimg.com/vi/hJ2Kjz0I5BU/hqdefault.jpg" alt="動画サムネイル：高還元SESが普通のSES会社と何が違うのか全部話します！" width="480" height="360" decoding="async" loading="lazy">
-        </a>
-        <div>
-          <div class="news-meta">
-            <span class="news-date"><time datetime="2026-05-22">2026.05.22</time></span>
-            <span class="news-cat">報酬・単価</span>
-          </div>
-          <h3>高還元SESが普通のSES会社と何が違うのか全部話します！</h3>
-          <p>チャンネルの最初の動画です。VALORISE設立の経緯、還元率を高くできる仕組み、他社に真似されない理由までを扱っています。</p>
-          <p class="news-link"><a href="https://youtu.be/hJ2Kjz0I5BU" target="_blank" rel="noopener">YouTubeで見る（19:59）</a></p>
-        </div>
-      </article>
-
-    </div>
-
-    <div class="news-more" id="news-more" hidden>
-      <button class="btn-ghost" type="button" id="news-more-btn">LOAD MORE</button>
-    </div>
+    <p class="video-all" data-r>
+      <a class="btn-ghost" href="https://www.youtube.com/@VALORISE2026-5" target="_blank" rel="noopener">ALL VIDEOS</a>
+    </p>
 
   </section>
 

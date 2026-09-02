@@ -914,90 +914,148 @@ img { max-width: 100%; }
 
 /* --- news ------------------------------------------------------------- */
 
-.news-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 40px;
-  margin-bottom: 52px;
-}
-.news-filter[hidden] { display: none; }
-.news-filter button {
-  padding: 10px 20px;
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--text-70);
-  font-family: var(--font-jp);
-  font-size: 12.5px;
-  letter-spacing: .04em;
-  cursor: pointer;
-  transition: border-color .25s var(--ease), color .25s var(--ease), background-color .25s var(--ease);
-}
-.news-filter button:hover { border-color: rgba(255, 255, 255, .5); color: #fff; }
-.news-filter button[aria-pressed="true"] {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
-}
-
-.news-list { border-top: 1px solid var(--line-soft); }
-
-.news-item {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: 44px;
-  align-items: start;
-  padding: 44px 0;
-  border-bottom: 1px solid var(--line-soft);
-}
-.news-item > * { min-width: 0; }
-.news-item[hidden] { display: none; }
-
-.news-item__thumb {
-  display: block;
-  position: relative;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--line);
-  background: var(--bg-panel);
-  overflow: hidden;
-  transition: border-color .3s var(--ease);
-}
-.news-item__thumb:hover { border-color: rgba(255, 255, 255, .45); }
-.news-item__thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.news-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+/* 日付表記はTOPICSと動画リストで共有している */
 .news-date {
   font-family: var(--font-en);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: .12em;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .06em;
   color: var(--text-50);
 }
-.news-cat {
-  padding: 4px 12px;
-  border: 1px solid var(--line);
-  font-size: 11.5px;
-  letter-spacing: .04em;
-  color: var(--text-70);
-}
-.news-item h3 {
-  margin: 16px 0 14px;
-  font-size: 19px;
-  line-height: 1.75;
-  font-weight: 700;
-}
-.news-item p { font-size: 13.5px; line-height: 2.1; color: var(--text-70); }
-.news-link { margin-top: 16px; font-size: 12.5px; letter-spacing: .04em; }
-.news-link a { color: var(--text-50); text-decoration: underline; text-underline-offset: 3px; }
-.news-link a:hover { color: #fff; }
 
-.news-more { margin-top: 56px; text-align: center; }
-.news-more[hidden] { display: none; }
+/* --- video（YouTube最新3件） -------------------------------------------
+   YouTubeのサムネイルは配色も文字量もこのサイトと衝突するため使わない。
+   番号・再生マークはすべてCSSで描き、外部画像の読み込みをゼロにしている。 */
+
+.video-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 44px;
+}
+.video-head .section-head,
+.video-head > div:first-child { margin-bottom: 0; }
+.video-head__note {
+  flex: none;
+  text-align: right;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text-50);
+}
+.video-head__note span {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: var(--text-40);
+}
+
+.video-list {
+  list-style: none;
+  border-top: 1px solid var(--line-soft);
+}
+.video { display: block; }
+
+.video__link {
+  display: grid;
+  grid-template-columns: 78px 1fr 46px;
+  align-items: center;
+  gap: 28px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line-soft);
+  color: inherit;
+  transition: background-color .35s var(--ease), padding-left .35s var(--ease);
+}
+.video__link:hover {
+  background-color: rgba(255, 255, 255, .035);
+  padding-left: 18px;
+}
+
+.video__no {
+  font-family: var(--font-en);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .02em;
+  color: rgba(255, 255, 255, .22);
+  transition: color .35s var(--ease);
+}
+.video__link:hover .video__no { color: rgba(255, 255, 255, .5); }
+
+.video__main { display: block; min-width: 0; }
+
+.video__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.video__meta time {
+  font-family: var(--font-en);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--text-50);
+}
+.video__cat {
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-60);
+}
+.video__dur {
+  font-family: var(--font-en);
+  font-size: 13px;
+  letter-spacing: .08em;
+  color: var(--text-40);
+}
+
+.video__title {
+  display: block;
+  font-size: 16.5px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: #fff;
+}
+.video__desc {
+  display: block;
+  margin-top: 10px;
+  max-width: 52em;
+  font-size: 13.5px;
+  line-height: 2.1;
+  color: var(--text-60);
+}
+
+/* 再生マーク。三角は border で描いているので画像もSVGも要らない */
+.video__play {
+  justify-self: end;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  transition: border-color .35s var(--ease), background-color .35s var(--ease);
+}
+.video__play::before {
+  content: "";
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 10px solid rgba(255, 255, 255, .55);
+  transition: border-left-color .35s var(--ease);
+}
+.video__link:hover .video__play {
+  border-color: rgba(255, 255, 255, .55);
+  background-color: rgba(255, 255, 255, .06);
+}
+.video__link:hover .video__play::before { border-left-color: #fff; }
+
+.video-all { margin-top: 44px; }
+
 
 button.btn-ghost {
   background: transparent;
@@ -1134,6 +1192,14 @@ button.btn-ghost {
 }
 .btn-solid:hover { background: #000000; color: #ffffff; }
 
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .form-status {
   margin-top: 24px;
   font-size: 13.5px;
@@ -1141,6 +1207,17 @@ button.btn-ghost {
   color: var(--text-70);
 }
 .form-status:empty { display: none; }
+/* 送信結果。色だけに頼らず文言でも状態を伝えている（色覚特性への配慮） */
+.form-status.is-done {
+  padding: 14px 18px;
+  border-left: 2px solid #5fd38d;
+  color: #fff;
+}
+.form-status.is-error {
+  padding: 14px 18px;
+  border-left: 2px solid #ff8a8a;
+  color: #fff;
+}
 
 .aside-block + .aside-block { margin-top: 40px; }
 .aside-block .label { display: block; margin-bottom: 14px; }
@@ -1259,8 +1336,11 @@ button.btn-ghost {
   .minor { grid-template-columns: 1fr; gap: 30px; }
   .new-service { padding: 28px 24px 30px; }
   .page-head__body { padding-top: 148px; padding-bottom: 68px; }
-  .news-item { grid-template-columns: 1fr; gap: 24px; padding: 34px 0; }
-  .news-filter { margin-bottom: 44px; }
+  .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .video-head__note { text-align: left; }
+  .video__link { grid-template-columns: 52px 1fr; gap: 18px; padding: 26px 0; }
+  .video__no { font-size: 30px; }
+  .video__play { display: none; }
   .member { grid-template-columns: 148px 1fr; gap: 26px; padding: 30px 0; }
   .topic { grid-template-columns: 1fr; gap: 12px; padding: 22px 0; }
 }

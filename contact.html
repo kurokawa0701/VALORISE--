@@ -70,7 +70,10 @@
   <section class="section section--lg wrap">
     <div class="contact-grid">
 
-      <form id="contact-form" novalidate data-r>
+      <!-- 申し送り：data-endpoint に Google Apps Script のウェブアプリURLを貼ってください。
+           手順は README.md の「お問い合わせフォームの接続」を参照。
+           空のままだと送信されず、画面に未設定である旨が表示されます。 -->
+      <form id="contact-form" novalidate data-r data-endpoint="https://script.google.com/macros/s/AKfycbwGjKcl9IFmC76y18YVrAmMi-5hWSMprIvNOHLUsYd4QsjeOfj6pJn7kYDSGcoip-MeRw/exec">
         <div class="field">
           <label for="f-type">お問い合わせ種別<span class="req">REQUIRED</span></label>
           <select id="f-type" name="type" required>
@@ -116,6 +119,13 @@
           <span><a href="privacy.html">プライバシーポリシー</a>に同意のうえ送信します。</span>
         </label>
         <span class="error" id="e-consent" role="alert"></span>
+
+        <!-- スパム対策。人には見えない欄で、ここに入力があるものは記録しません。
+             消さないでください。 -->
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">この欄は入力しないでください</label>
+          <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
 
         <button class="btn-solid" type="submit">SEND</button>
         <p class="form-status" id="form-status" role="status"></p>

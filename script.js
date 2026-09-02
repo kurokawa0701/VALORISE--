@@ -75,62 +75,59 @@
         return;
       }
 
-      // TODO: 送信先が未接続です。Formspree 等のフォームAPI、または
-      // サーバーレス関数のエンドポイントへ fetch() で送信してください。
-      status.textContent = '入力内容に問題はありません。※現在フォームの送信先が未設定のため、実際には送信されません。';
+      // 送信先は contact.html の <form data-endpoint="..."> で指定します。
+      // Google Apps Script のウェブアプリURL（/exec で終わるもの）を貼ってください。
+      var endpoint = form.getAttribute('data-endpoint') || '';
+      if (endpoint.indexOf('http') !== 0) {
+        status.className = 'form-status is-error';
+        status.textContent = '入力内容に問題はありません。※送信先が未設定のため、実際には送信されていません。';
+        return;
+      }
+
+      var btn = form.querySelector('button[type="submit"]');
+      var payload = {
+        type:    document.getElementById('f-type').value,
+        name:    document.getElementById('f-name').value.trim(),
+        company: document.getElementById('f-company').value.trim(),
+        email:   document.getElementById('f-email').value.trim(),
+        tel:     document.getElementById('f-tel').value.trim(),
+        message: document.getElementById('f-message').value.trim(),
+        website: document.getElementById('f-website') ? document.getElementById('f-website').value : '',
+        page:    location.href
+      };
+
+      if (btn) { btn.disabled = true; btn.textContent = 'SENDING...'; }
+      status.className = 'form-status';
+      status.textContent = '送信しています…';
+
+      // Content-Type を text/plain にしているのは、プリフライト（OPTIONS）を
+      // 発生させないためです。application/json にすると Apps Script 側が
+      // OPTIONS に応答できず、CORSエラーになります。変更しないでください。
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (!data || !data.ok) throw new Error(data && data.error ? data.error : 'unknown');
+          form.reset();
+          status.className = 'form-status is-done';
+          status.textContent = '送信しました。3営業日以内に担当者よりご連絡いたします。';
+        })
+        .catch(function () {
+          status.className = 'form-status is-error';
+          status.textContent = '送信に失敗しました。時間をおいて再度お試しいただくか、お手数ですがメールにてご連絡ください。';
+        })
+        .then(function () {
+          if (btn) { btn.disabled = false; btn.textContent = 'SEND'; }
+        });
     });
   }
 
-  /* --- news list: filter + load more -------------------------------- */
-  var newsList = document.getElementById('news-list');
-
-  if (newsList) {
-    var STEP = 5;
-    var items = Array.prototype.slice.call(newsList.querySelectorAll('.news-item'));
-    var filterBar = document.getElementById('news-filter');
-    var moreBox = document.getElementById('news-more');
-    var moreBtn = document.getElementById('news-more-btn');
-    var activeCat = 'all';
-    var shown = STEP;
-
-    function matches(el) {
-      return activeCat === 'all' || el.getAttribute('data-cat') === activeCat;
-    }
-
-    function render() {
-      var count = 0;
-      items.forEach(function (el) {
-        if (!matches(el)) { el.hidden = true; return; }
-        count += 1;
-        el.hidden = count > shown;
-      });
-      if (moreBox) moreBox.hidden = count <= shown;
-    }
-
-    // JS が動くときだけ絞り込みUIを出す。JS無効なら全件がそのまま並ぶ。
-    if (filterBar) {
-      filterBar.hidden = false;
-      filterBar.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-filter]');
-        if (!btn) return;
-        activeCat = btn.getAttribute('data-filter');
-        shown = STEP;
-        Array.prototype.forEach.call(filterBar.querySelectorAll('button'), function (b) {
-          b.setAttribute('aria-pressed', String(b === btn));
-        });
-        render();
-      });
-    }
-
-    if (moreBtn) {
-      moreBtn.addEventListener('click', function () {
-        shown += STEP;
-        render();
-      });
-    }
-
-    render();
-  }
+  /* --- VIDEO セクションについて -------------------------------------
+     以前は絞り込みと LOAD MORE を持つ動画一覧をここで制御していましたが、
+     最新3件を手で並べる形に変えたため、関連するJSは削除しました。 */
 
   /* --- scroll reveal ------------------------------------------------ */
   var SELECTOR = '[data-r],[data-fade],[data-bar]';
