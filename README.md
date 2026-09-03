@@ -166,6 +166,7 @@ python tools/optimize_photo.py 撮影/office.jpg --preset wide --out access.jpg
 
 | ファイル | 使用箇所 | 寸法 | 容量 |
 |---|---|---|---|
+| `assets/logo-mark.png` | ヘッダー左のエンブレム | 96×96 | 18KB |
 | `assets/hero-night.jpg` | index ヒーロー背景（高層階から見下ろす東京の夜景） | 1672×941 | 215KB |
 | `assets/logo-mark.png` | 透過エンブレム（現在は未使用・OGP等の予備） | 840×840 | 145KB |
 | `assets/service-dev.jpg` | service 01 システム開発 | 1200×800 | 63KB |
@@ -216,7 +217,7 @@ python tools/optimize_photo.py 撮影/office.jpg --preset wide --out access.jpg
 
 **ヘッダーのロゴは今も文字**（Barlow Condensed の「VALORISE」）です。エンブレム画像に差し替えることもできますが、ヘッダーは全ページに出るので、切り替えると印象がかなり変わります。
 
-**未使用ファイルは `tools/_unused/` へ移しました。** 削除はしていません。`_t.png` / `about.jpg` / `community.jpg` / `hero.jpg` / `logo-icon.png` / `logo-lockup-web.png` / `logo-mark.png` の7点です。`logo-icon.png` はエンブレムの元データ、`logo-mark.png` はそれを透過PNG化したもので、いずれもブランド素材なので保管しています。公開フォルダ（`valorise/`）には置かない方針です。
+**未使用ファイルは `tools/_unused/` へ移しました。** 削除はしていません。`_t.png` / `about.jpg` / `community.jpg` / `hero.jpg` / `logo-icon.png` / `logo-lockup-web.png` / `logo-mark.png` の7点です。`logo-icon.png` はエンブレムの元データです。なお `logo-mark.png` はヘッダーのエンブレムとして使うため `assets/` に戻しました（96×96・透過PNG・18KB）。公開フォルダ（`valorise/`）には置かない方針です。
 
 SERVICE の2枚は `.feature__aside` の上部にパネルの罫線まで見開きで配置しています（`.feature__photo`）。`height: auto` を必ず併記してください。書かないとHTMLの `height` 属性が残り、`aspect-ratio` が無視されます。
 
@@ -301,3 +302,36 @@ SERVICE の2枚は `.feature__aside` の上部にパネルの罫線まで見開�
 - 個人情報を扱うため、シートの共有範囲は必要な担当者のみに限定してください。
 - 自動返信の差出人アドレスは、**Apps Scriptを設置したGoogleアカウントのアドレス**になります。表示名は `REPLY_FROM_NAME` で変えられますが、アドレス自体は変更できません。会社のドメインで送りたい場合は、そのドメインのアカウントでスプレッドシートとスクリプトを作成してください。
 - 自動返信は「3営業日以内にご連絡」と書いています。実際の運用に合わせて `sendAutoReply` 内の文面を調整してください。
+
+## デプロイ時の注意（重要）
+
+`style.css` と `script.js` は、全HTMLから **バージョン番号つき** で読み込んでいます。
+
+```html
+<link rel="stylesheet" href="style.css?v=202609021321">
+<script src="script.js?v=202609021321"></script>
+```
+
+**CSSかJSを変更したら、全8ページの `v=` の値を必ず新しくしてください。** これを忘れると、閲覧者のブラウザが古いファイルを使い続け、「更新したのに反映されない」状態になります。実際に一度これで表示が崩れました。
+
+値は日時（`年月日時分`）にしています。中身は何でも構いませんが、前回と違う値である必要があります。
+
+`valorise` フォルダでターミナルを開き、次を実行すると一括で更新できます。
+
+**Windows（PowerShell）**
+
+```powershell
+$v = Get-Date -Format "yyyyMMddHHmm"
+Get-ChildItem *.html | ForEach-Object {
+  (Get-Content $_ -Raw) -replace 'style\.css\?v=\d+', "style.css?v=$v" -replace 'script\.js\?v=\d+', "script.js?v=$v" | Set-Content $_ -NoNewline
+}
+```
+
+**Mac / Linux**
+
+```bash
+V=$(date +%Y%m%d%H%M)
+sed -i '' -E "s/style\.css\?v=[0-9]+/style.css?v=$V/; s/script\.js\?v=[0-9]+/script.js?v=$V/" *.html
+```
+
+画像を差し替えた場合も同じことが起きます。その場合はファイル名自体を変える（`hero-night.jpg` → `hero-night-2.jpg`）のが確実です。

@@ -214,12 +214,26 @@ img { max-width: 100%; }
   background: linear-gradient(180deg, rgba(0, 0, 0, .55), rgba(0, 0, 0, 0));
 }
 
+/* エンブレム＋文字ロゴ。エンブレムは六角形の内側が濃紺で塗られているため、
+   黒背景の上では紺の面と金の線がそのまま出る。透過PNGなので余白は出ない。 */
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-en);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: .32em;
 }
+.logo__mark {
+  width: 28px;
+  height: 28px;
+  /* 文字の見た目の重心と揃える。エンブレム下端の余白ぶんだけ上げている */
+  margin-top: -1px;
+}
+/* ロゴ全体にホバー色が乗ると金が濁るので、文字だけ色を変える */
+.logo:hover { color: inherit; }
+.logo:hover span { color: #9aa0a6; }
 
 .global-nav {
   display: flex;
@@ -1233,6 +1247,20 @@ button.btn-ghost {
   line-height: 1.7;
 }
 .legal h2:first-child { margin-top: 0; }
+/* 条文の中の小見出し。h2 より一段弱くして、階層が分かるようにする */
+.legal h3 {
+  margin-top: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.8;
+  color: var(--text-70);
+}
+.legal a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, .35);
+}
+.legal a:hover { color: #fff; text-decoration-color: #fff; }
 .legal p,
 .legal li {
   margin-top: 16px;
@@ -1336,6 +1364,8 @@ button.btn-ghost {
   .minor { grid-template-columns: 1fr; gap: 30px; }
   .new-service { padding: 28px 24px 30px; }
   .page-head__body { padding-top: 148px; padding-bottom: 68px; }
+  .logo { gap: 9px; }
+  .logo__mark { width: 24px; height: 24px; }
   .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
   .video-head__note { text-align: left; }
   .video__link { grid-template-columns: 52px 1fr; gap: 18px; padding: 26px 0; }
